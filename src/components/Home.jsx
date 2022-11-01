@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
 
 const Home = () => {
+    const users = useLoaderData();
     const [user, setUser] = useState({});
 
     const handleAddWork = event => {
         event.preventDefault();
         console.log(user);
 
+
+        // CRUD - Create setup
         fetch('http://localhost:5000/users', {
             method: 'POST',
             headers: {
@@ -35,7 +39,7 @@ const Home = () => {
     return (
         // todo
         <div>
-            <h1>Add Your Task</h1>
+            <h1>Add Your Task {users.length}</h1>
             <form onSubmit={handleAddWork}>
                 <input onBlur={handleInputBlur} type="text" name="title" placeholder='title' required />
                 <br />
@@ -43,6 +47,18 @@ const Home = () => {
                 <br />
                 <button type='submit'>Add Item</button>
             </form>
+
+
+            <div>
+                {
+                    users.map(usr =>
+                        <p key={usr._id}>
+                            {usr.title}{usr.desc}
+                            <button >X</button>
+                        </p>
+                    )
+                }
+            </div>
         </div>
     );
 };
